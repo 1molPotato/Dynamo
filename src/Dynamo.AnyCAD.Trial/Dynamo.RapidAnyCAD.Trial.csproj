@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(SolutionDir)Config\CS_SDK.props" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <PackageIcon>app.ico</PackageIcon>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AnyCAD.Platform.NET" Version="2024.2.1.1045" />
+    <PackageReference Include="AnyCAD.Rapid.NET" Version="2024.2.1.1045" />
+    <PackageReference Include="AnyCAD.Simulate.NET" Version="2024.2.1.1045" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnyCADServices\AnyCADServices.csproj" />
+    <ProjectReference Include="..\DynamoApplications\DynamoApplications.csproj" />
+    <ProjectReference Include="..\DynamoCoreWpf\DynamoCoreWpf.csproj" />
+    <ProjectReference Include="..\DynamoCore\DynamoCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="app.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
