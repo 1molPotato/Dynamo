@@ -1,4 +1,4 @@
-namespace AnyCADServices
+namespace AnyCADServices.Elements
 {
     public class DisposeLogic
     {

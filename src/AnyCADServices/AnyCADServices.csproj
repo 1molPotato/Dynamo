@@ -8,5 +8,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AnyCAD.Platform.NET" Version="2024.2.1.1045" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DynamoCore\DynamoCore.csproj" />
+    <ProjectReference Include="..\NodeServices\DynamoServices.csproj" />
+  </ItemGroup>
 
 </Project>

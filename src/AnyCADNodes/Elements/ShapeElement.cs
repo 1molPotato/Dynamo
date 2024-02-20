@@ -9,6 +9,7 @@ using AnyCADNodes.Extension;
 using AElement = AnyCAD.Foundation.Element;
 using AShapeElement = AnyCAD.Foundation.ShapeElement;
 using DynamoServices;
+using AnyCADServices.Persistence;
 
 namespace AnyCADNodes.Elements
 {
@@ -47,15 +48,22 @@ namespace AnyCADNodes.Elements
 
         private void Init(TopoShape topoShape)
         {
-            // TODO: get from trace?
+            // try to reuse from trace
+            var shapeElement = AShapeElement.Cast(ElementBinder.GetElementFromTrace(Document));
 
             UndoTransaction undo = new(Document);
             undo.Start("shape");
-            var shapeElement = AShapeElement.Create(Document);
+            if (shapeElement == null)
+            {
+                shapeElement = AShapeElement.Create(Document);
+            }
             shapeElement.SetShape(topoShape);
             undo.Commit();
 
             InternalInit(shapeElement);
+
+            // TODO: clear and set?
+            ElementBinder.SetElementForTrace(shapeElement.GetId());
         }
 
         private void InternalInit(AShapeElement shapeElement)

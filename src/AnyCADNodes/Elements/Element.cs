@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AnyCADServices;
 
 using AElement = AnyCAD.Foundation.Element;
+using AnyCADServices.Elements;
+using AnyCADServices.Persistence;
 
 namespace AnyCADNodes.Elements
 {
@@ -53,7 +54,8 @@ namespace AnyCADNodes.Elements
             {
                 _internalId = value;
 
-                // TODO: id lifecycle manager
+                var manager = ElementIdLifecycleManager.Instance;
+                manager.RegisterAsssociation(Id, this);
             }
         }
 
@@ -63,15 +65,36 @@ namespace AnyCADNodes.Elements
             if (DisposeLogic.IsShuttingDown || DisposeLogic.IsClosingHomeworkspace)
                 return;
 
-            if (!_isOwned && InternalId.IsValid())
+            var manager = ElementIdLifecycleManager.Instance;
+            // bool didOwnerDelete = manager.IsOwnerDeleted(Id);
+
+            int remainingBindings = manager.UnRegisterAssociation(Id, this);
+
+            if (!_isOwned && remainingBindings == 0 && InternalId.IsValid())
             {
                 UndoTransaction undo = new(Document);
                 undo.Start("erase");
                 Document.RemoveElement(InternalId);
                 undo.Commit();
             }
+            else
+            {
+                //This element has gone
+                //but there was something else holding onto the AnyCAD object so don't purge it
 
-            InternalId = ObjectId.InvalidId;
+                _internalId = ObjectId.InvalidId;
+            }
+        }
+
+        public ulong Id
+        {
+            get
+            {
+                var id = InternalId;
+                if (id.IsInvalid())
+                    return 0;
+                return id.GetInteger();
+            }
         }
     }
 }
